@@ -579,7 +579,7 @@ setup() {
 
 | Command | Description |
 |:--------|:-------------|
-| `alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'` | Create a global `sail` shortcut. |
+| `alias sail='[ -f sail ] && bash sail \|\| bash vendor/bin/sail'` | Create a global `sail` shortcut. |
 | After alias | Run commands like `sail up`, `sail artisan migrate`, etc. |
 
 ---
