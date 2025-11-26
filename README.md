@@ -7,7 +7,8 @@
    - [Composer Commands](#composer-commands) 
    - [NPM Commands](#npm-commands) 
    - [Artisan Commands](#artisan-commands) 
-   - [VueJS](#vuejs) 
+   - [VueJS](#vuejs)
+   - [Laravel Sail](#laravel-sail) 
 
 
 ## Introduction
@@ -489,3 +490,105 @@ setup() {
 
   return { count, state, doubled, increment };
 }
+```
+
+### Laravel Sail
+
+##### Basic Sail Commands
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail up` | Start Sail (Docker containers). |
+| `./vendor/bin/sail up -d` | Start Sail in detached/background mode. |
+| `./vendor/bin/sail down` | Stop Sail and all containers. |
+| `./vendor/bin/sail restart` | Restart all Sail containers. |
+| `./vendor/bin/sail ps` | List running containers. |
+| `./vendor/bin/sail build` | Build Docker containers. |
+| `./vendor/bin/sail build --no-cache` | Build containers without using cache. |
+
+---
+
+##### Artisan Commands via Sail
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail artisan migrate` | Run database migrations. |
+| `./vendor/bin/sail artisan migrate:fresh` | Drop all tables and re-run migrations. |
+| `./vendor/bin/sail artisan tinker` | Open Tinker inside Sail. |
+| `./vendor/bin/sail artisan test` | Run Laravel tests. |
+| `./vendor/bin/sail artisan queue:work` | Run queue worker inside Sail. |
+| `./vendor/bin/sail artisan storage:link` | Create storage symlink. |
+
+---
+
+##### Composer Commands via Sail
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail composer install` | Install dependencies. |
+| `./vendor/bin/sail composer update` | Update dependencies. |
+| `./vendor/bin/sail composer dump-autoload` | Refresh class autoloading. |
+
+---
+
+##### Node/NPM Commands via Sail
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail npm install` | Install frontend dependencies. |
+| `./vendor/bin/sail npm run dev` | Compile assets for development. |
+| `./vendor/bin/sail npm run build` | Build assets for production. |
+| `./vendor/bin/sail npm run watch` | Watch for changes and auto-compile. |
+
+---
+
+##### Shell & Tools
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail bash` | Enter a Bash shell inside the container. |
+| `./vendor/bin/sail shell` | Open default Sail shell. |
+| `./vendor/bin/sail php -v` | Check PHP version inside Sail. |
+| `./vendor/bin/sail logs` | Show container logs. |
+| `./vendor/bin/sail logs laravel.test` | Show logs for a specific container. |
+
+---
+
+##### Database & Cache
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail mysql` | Connect to MySQL inside Sail. |
+| `./vendor/bin/sail mariadb` | Connect to MariaDB (if used). |
+| `./vendor/bin/sail postgres` | Connect to PostgreSQL. |
+| `./vendor/bin/sail redis` | Connect to Redis service. |
+| `./vendor/bin/sail redis-cli` | Run Redis CLI within container. |
+
+---
+
+##### Port Configuration
+
+| Location | Action |
+|:----------|:--------|
+| `docker-compose.yml` → `ports:` | Edit port mapping to change host port. Example: `"8080:80"` |
+| Restart Sail | `./vendor/bin/sail down && ./vendor/bin/sail up -d` |
+
+---
+
+##### Optional Sail Alias
+
+| Command | Description |
+|:--------|:-------------|
+| `alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'` | Create a global `sail` shortcut. |
+| After alias | Run commands like `sail up`, `sail artisan migrate`, etc. |
+
+---
+
+##### Debugging
+
+| Command | Description |
+|:--------|:-------------|
+| `./vendor/bin/sail logs` | View logs for all services. |
+| `./vendor/bin/sail logs laravel.test` | View logs for app container. |
+| `./vendor/bin/sail artisan config:cache` | Cache configuration. |
+| `./vendor/bin/sail artisan cache:clear` | Clear Laravel cache. |
