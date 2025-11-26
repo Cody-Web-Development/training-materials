@@ -8,6 +8,7 @@
    - [Composer Commands](#composer-commands) 
    - [NPM Commands](#npm-commands) 
    - [Artisan Commands](#artisan-commands) 
+   - [VueJS](#vuejs) 
 
 
 ## Introduction
@@ -405,3 +406,59 @@ If you already have PHP & Composer installed:
 | `php artisan schedule:run`         | Run scheduled tasks  |
 | `php artisan schedule:list`        | List scheduled tasks |
 | `php artisan schedule:clear-cache` | Clear schedule cache |
+
+### VueJS
+
+| Command | Description |
+|:---------|:-------------|
+| `npm install -g @vue/cli` | Install Vue CLI globally. |
+| `vue create <project>` | Create a new Vue project. |
+| `cd <project>` | Go into project directory. |
+| `npm run serve` | Start development server. |
+| `npm run build` | Build project for production. |
+| `npm run lint` | Run ESLint checks. |
+| `vue add router` | Add Vue Router (SPA routing). |
+| `vue add vuex` | Add Vuex (state management). |
+| `vue ui` | Launch Vue GUI for project management. |
+| `vue info` | Display system info & debug CLI issues. |
+| `npm outdated` | Check for outdated packages. |
+| `npm update` | Update dependencies. |
+
+---
+
+##### Directives (Most Used)
+| Directive | Usage | Notes |
+|:-----------|:-------|:------|
+| `v-if` | `<div v-if="show">...</div>` | Conditional rendering. |
+| `v-else` | `<div v-else>...</div>` | Alternative block if `v-if` is false. |
+| `v-for` | `<li v-for="item in items">{{ item }}</li>` | Loop through arrays/objects. |
+| `v-model` | `<input v-model="text">` | Two-way data binding. |
+| `v-bind` | `<img :src="imageUrl">` | Bind attribute dynamically. |
+| `v-on` | `<button @click="handleClick">Click</button>` | Listen to events. |
+
+---
+
+##### Component Essentials
+| Feature | Usage |
+|:---------|:-------|
+| Props | Pass data to child: `props: ['name']` |
+| Events | Emit to parent: `this.$emit('event')` |
+| Slots | `<slot></slot>` for content injection |
+| Single File Components | `.vue` with `<template>`, `<script>`, `<style>` |
+| Lifecycle Hooks | `created`, `mounted`, `updated`, `beforeUnmount` |
+
+---
+
+##### Vue 3 Composition API
+```js
+import { ref, reactive, computed } from 'vue';
+
+setup() {
+  const count = ref(0);
+  const state = reactive({ name: 'Vue' });
+  const doubled = computed(() => count.value * 2);
+
+  function increment() { count.value++ }
+
+  return { count, state, doubled, increment };
+}
