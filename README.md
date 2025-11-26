@@ -3,7 +3,6 @@
 2. [Installation and Setup](#installation-and-setup)
    - [Prerequisites](#prerequisites)
    - [Installation](#installation)
-3. [DevOps](#devops)
 4. [Cheat Sheet](#cheat-sheet)
    - [Composer Commands](#composer-commands) 
    - [NPM Commands](#npm-commands) 
@@ -38,143 +37,75 @@ Gain practical skills, adopt best coding practices, and accelerate your developm
 ---
 
 ### Installation
-#### Option 1: Using Laravel Sail (Docker) — macOS, Windows (WSL2), Linux
 
-1. Install Docker Desktop
- - Windows: also enable `WSL2`.
-2. Create a new Laravel project
-	```
-	curl -s https://laravel.build/example-app | bash
-	```
-3. Start Laravel Sail
-	```
-	cd example-app
-	./vendor/bin/sail up
-	```
-4. Open in browser
-	```
-	Visit: http://localhost
-	```
+If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
 
-#### Option 2: Install via Composer (No Docker Required)
-If you already have PHP & Composer installed:
+* **macOS**
 
-1. Create project using Composer
 	```
-	composer create-project laravel/laravel example-app
-	cd example-app
-	php artisan serve
-	```
-	Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-2. Using the Laravel Installer
-	1. Install installer:
-		```
-		composer global require laravel/installer
-		```
-	2. Create a project:
-		```
-		laravel new example-app
-		cd example-app
-		php artisan serve
-		```
+	/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.4)"
 	
-## DevOps
+	```
+* **Windows PowerShell**
 
-Continuous Integration (CI) and Continuous Deployment (CD) automate testing, building, and deployment of your Laravel applications. This guide covers the essential setup steps.
+	**Note**: Run as administrator
+	
+	```
+	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
+	```
+	
+* **Linux**
 
----
+	```
+	/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
+	```
+	
+#### Installing Laravel
 
-##### Prerequisites
-- Laravel project with `composer.json` and `artisan` commands working.
-- Git repository (GitHub, GitLab, Bitbucket).
-- Hosting environment (VPS, cloud service, or PaaS like Laravel Forge, DigitalOcean, AWS).
-- CI/CD tool: GitHub Actions, GitLab CI, Bitbucket Pipelines, Jenkins, or CircleCI.
+If you already installed PHP and Compose, you may now install the Laravel installer via Composer, there are 2 primary methods to install laravel.
 
----
+##### Method 1: Laravel Installer `HIGHLY RECOMMENDED`
 
-##### Basic CI/CD Workflow
-1. **Push code** → triggers pipeline.
-2. **Install dependencies** → composer & npm.
-3. **Run tests** → PHPUnit for backend, optional frontend tests.
-4. **Build assets** → Laravel Mix or Vite.
-5. **Deploy** → deploy to staging/production server.
+```
+composer global require laravel/installer
+laravel new example-app
+cd example-app
+npm install && npm run build
+```
+**Note:** Replace `example-app` with whatever project name you choose.
 
----
+##### Method 2: `composer create-project`
+Run the following command, replacing `example-app` with your desired project name:
 
-##### GitHub Actions Setup
-
-**File:** `.github/workflows/laravel.yml`
-
-```yaml
-name: Laravel CI/CD
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  laravel-tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, bcmath, pdo_mysql
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
-      - name: Copy env
-        run: cp .env.example .env
-
-      - name: Generate key
-        run: php artisan key:generate
-
-      - name: Run migrations
-        run: php artisan migrate --env=testing
-
-      - name: Run tests
-        run: php artisan test
-
-      - name: Install Node & build assets
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - run: npm install
-      - run: npm run build
-
-  deploy:
-    needs: laravel-tests
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /var/www/laravel-app
-            git pull origin main
-            composer install --no-dev --optimize-autoloader
-            php artisan migrate --force
-            npm install
-            npm run build
-            php artisan cache:clear
+```
+composer create-project --prefer-dist laravel/laravel example-app
+cd example-app
+npm install && npm run build
 ```
 
+**Note:** If you install using method 2 you may need to install laravel/sail seperately, you can fix it by running the following commands:
+
+```
+composer require laravel/sail --dev
+php artisan sail:install
+```
+
+#### Running your Laravel Application
+
+* **Using Laravel Sail** (macOS, Windows WSL2 and Linux) `HIGHLY RECOMMENDED`
+
+	```
+	./vendor/bin/sail up
+	```
+
+* **Using `composer run dev`**
+	
+	**Note:** With this setup we cannot implement CI/CD.
+		
+	```
+	composer run dev
+	```
+	
 ## Cheat Sheet
 ### Composer Commands
 ##### Installing Dependencies
