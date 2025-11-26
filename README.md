@@ -11,7 +11,10 @@
 
 
 ## Introduction
----
+Laravel is a powerful PHP framework that simplifies building modern, secure, and scalable web applications. This training equips you with hands-on experience in routing, database management, authentication, and more.
+
+Gain practical skills, adopt best coding practices, and accelerate your development workflow—preparing you to confidently tackle real-world projects and enhance your career prospects.
+
 ## Installation and Setup
 ### Prerequisites
 * Docker
@@ -31,6 +34,7 @@
 
 **Note:** Docker is not required if we are not using Laravel Sail, enabling WSL2 well be required if using Windows, See official [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 
+---
 
 ### Installation
 #### Option 1: Using Laravel Sail (Docker) — macOS, Windows (WSL2), Linux
