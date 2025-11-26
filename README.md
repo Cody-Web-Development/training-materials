@@ -170,7 +170,7 @@ If you already have PHP & Composer installed:
 | `npx <package>` | | Executes package binaries without global installation. Great for one-time commands like `npx create-react-app my-app`. |
 | `npm init @<template>` | | Initializes a project using a template. Example: `npm init @vitejs/app`. |
 | `npm prune` | | Removes extraneous packages not listed in `package.json`. |
-| `npm version <patch|minor|major>` | | Bumps project version in `package.json` automatically. |
+| `npm version <patch\|minor\|major>` | | Bumps project version in `package.json` automatically. |
 | `npm root` | `-g` | Shows the path to the local or global `node_modules` folder. |
 | `npm help <command>` | | Displays help information for a specific npm command. |
 | `npm doctor` | | Checks the health of your npm environment and installation. |
