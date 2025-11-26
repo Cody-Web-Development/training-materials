@@ -79,6 +79,102 @@ If you already have PHP & Composer installed:
 		```
 	
 ## DevOps
+
+Continuous Integration (CI) and Continuous Deployment (CD) automate testing, building, and deployment of your Laravel applications. This guide covers the essential setup steps.
+
+---
+
+##### Prerequisites
+- Laravel project with `composer.json` and `artisan` commands working.
+- Git repository (GitHub, GitLab, Bitbucket).
+- Hosting environment (VPS, cloud service, or PaaS like Laravel Forge, DigitalOcean, AWS).
+- CI/CD tool: GitHub Actions, GitLab CI, Bitbucket Pipelines, Jenkins, or CircleCI.
+
+---
+
+##### Basic CI/CD Workflow
+1. **Push code** → triggers pipeline.
+2. **Install dependencies** → composer & npm.
+3. **Run tests** → PHPUnit for backend, optional frontend tests.
+4. **Build assets** → Laravel Mix or Vite.
+5. **Deploy** → deploy to staging/production server.
+
+---
+
+##### GitHub Actions Setup
+
+**File:** `.github/workflows/laravel.yml`
+
+```yaml
+name: Laravel CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, pdo_mysql
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Copy env
+        run: cp .env.example .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run migrations
+        run: php artisan migrate --env=testing
+
+      - name: Run tests
+        run: php artisan test
+
+      - name: Install Node & build assets
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: npm run build
+
+  deploy:
+    needs: laravel-tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/laravel-app
+            git pull origin main
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            npm install
+            npm run build
+            php artisan cache:clear
+```
+
 ## Cheat Sheet
 ### Composer Commands
 ##### Installing Dependencies
@@ -446,7 +542,7 @@ If you already have PHP & Composer installed:
 | Slots | `<slot></slot>` for content injection |
 | Single File Components | `.vue` with `<template>`, `<script>`, `<style>` |
 | Lifecycle Hooks | `created`, `mounted`, `updated`, `beforeUnmount` |
-
+		
 ---
 
 ##### Vue 3 Composition API
