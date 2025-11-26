@@ -2,7 +2,7 @@
 1. [Introduction](#introduction)
 2. [Installation and Setup](#installation-and-setup)
    - [Prerequisites](#prerequisites)
-   - [Installation](https://github.com/Cody-Web-Development/training-materials/edit/main/README.md#installation)
+   - [Installation](#installation)
 3. [DevOps](#devops)
 4. [Cheat Sheet](#cheat-sheet)
    - [Composer Commands](#composer-commands) 
