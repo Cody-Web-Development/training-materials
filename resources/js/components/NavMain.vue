@@ -1,38 +1,23 @@
 <script setup lang="ts">
-import {
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from '@/components/ui/sidebar';
-import { urlIsActive } from '@/lib/utils';
-import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-
-defineProps<{
-    items: NavItem[];
-}>();
+import { HEADER_NAV_ITEMS } from '@/config/navigation.ts'
 
 const page = usePage();
 </script>
 
 <template>
-    <SidebarGroup class="px-2 py-0">
-        <SidebarGroupLabel>Platform</SidebarGroupLabel>
-        <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.title">
-                <SidebarMenuButton
-                    as-child
-                    :is-active="urlIsActive(item.href, page.url)"
-                    :tooltip="item.title"
-                >
-                    <Link :href="item.href">
-                        <component :is="item.icon" />
-                        <span>{{ item.title }}</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-        </SidebarMenu>
-    </SidebarGroup>
+    <div class="flex space-x-4">
+        <Link
+            v-for="item in HEADER_NAV_ITEMS"
+            :key="item.title"
+            :href="item.href"
+            :class="{
+                'transition duration-300 ease-in-out px-5 py-2 block rounded font-medium': true,                
+                'bg-red-700 text-white': item.href === page.url,
+                'hover:bg-red-200 hover:text-red-700 text-gray-600': item.href !== page.url
+            }"
+        >
+            {{ item.title }}
+        </Link>
+    </div>
 </template>
