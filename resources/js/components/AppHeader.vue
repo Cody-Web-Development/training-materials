@@ -11,9 +11,9 @@ import { Link } from '@inertiajs/vue3';
             <AppLogo />
             <NavMain />
             <div class="flex items-center">
-                <button class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
-                    Sign In
-                </button>
+                <a href="/login" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+                    Login
+                </a>
             </div>
         </div>
     </nav>
