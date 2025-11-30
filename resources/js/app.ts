@@ -2,9 +2,10 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
+import { createPinia } from 'pinia';
 
-// import.meta.glob returns unknown, so type it properly
 const pages = import.meta.glob<Record<string, any>>('./Pages/**/*.vue');
+const pinia = createPinia();
 
 createInertiaApp({
   resolve: (name: string) =>
@@ -14,7 +15,6 @@ createInertiaApp({
         Object.entries(pages).map(([key, resolver]) => [
           key,
           async () => {
-            // Cast the module so TypeScript knows it has a default export
             const mod = (await resolver()) as { default: DefineComponent };
             return mod.default;
           },
@@ -22,8 +22,11 @@ createInertiaApp({
       )
     ),
   setup({ el, App, props, plugin }) {
-    createApp({ render: () => h(App, props) })
-      .use(plugin) // required for Head & Link
-      .mount(el);
+    const app = createApp({ render: () => h(App, props) });
+    app.use(plugin);
+    app.use(pinia);
+    app.mount(el);
+      
+
   },
 });
