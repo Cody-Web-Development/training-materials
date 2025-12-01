@@ -43,12 +43,12 @@ Route::get('/dynamic/{slug?}', function (string $slug = 'No dynamic URL') {
 
 // Guarded
 Route::prefix('admin')
-    // ->middleware(['auth'])    
+    // ->middleware(['auth'])
     ->group(function () {
     Route::get('/', function () {
         return Inertia::render('admin/Dashboard');
     })->name('dashboard');
-    
+
     Route::resource('users', UserController::class);
     Route::resource('tickets', TicketController::class);
 
