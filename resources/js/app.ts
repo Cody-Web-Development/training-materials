@@ -21,12 +21,10 @@ createInertiaApp({
         ])
       )
     ),
-  setup({ el, App, props, plugin }) {
-    const app = createApp({ render: () => h(App, props) });
-    app.use(plugin);
-    app.use(pinia);
-    app.mount(el);
-      
-
-  },
+    setup({ el, App, props, plugin }) {
+      const app = createApp({ render: () => h(App, props) });
+      app.use(plugin);
+      app.use(pinia);
+      app.mount(el);
+    },
 });

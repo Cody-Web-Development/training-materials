@@ -1,19 +1,18 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BankController;
 use App\Http\Controllers\UserController;
-
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Http\Controllers\Api\ApiAuthController;
 
 Route::prefix('v1')->group(function(){
     // Auth
-    Route::post('/auth', 'App\Http\Controllers\AuthController@login');
+    Route::post('/auth', [ApiAuthController::class, 'auth'])->name('auth');
 
-    // Resources
-    Route::resource('user', UserController::class);
-    Route::resource('bank', BankController::class);
+    Route::middleware('auth:sanctum')->group(function () {        
+        // Logout by revoking the current token
+        Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout');
+        
+        // Resources
+        Route::resource('user', UserController::class);
+    });
 });
