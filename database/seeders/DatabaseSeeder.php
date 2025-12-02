@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Bank;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -31,5 +32,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(100)->create();
+        
+        Bank::factory(100)->create();
     }
 }
