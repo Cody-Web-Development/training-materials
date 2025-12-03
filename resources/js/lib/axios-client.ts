@@ -14,13 +14,14 @@ export class AxiosApiClient {
 
     constructor(config: ApiConfig = {}) {
         this.client = axios.create({
-            baseURL: config.baseURL || import.meta.env.VITE_API_URL || 'http://localhost',
+            baseURL: config.baseURL || import.meta.env.VITE_API_URL || 'http://localhost:8080',
             timeout: config.timeout || 10000,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 ...config.headers,
             },
+            withCredentials: true,
         })
 
         // Request interceptor - add auth token

@@ -16,14 +16,29 @@ import {
 
 export const authService = {
     async login(credentials: LoginRequest): Promise<LoginResponse> {
-        const response = await ApiClient.post<ApiResponse<LoginResponse>>(
-            '/api/v1/auth',
-            credentials
-        )
-        if (response.data) {
-            ApiClient.setToken(response.data.access_token)
-            return response.data
+        // Ensure Sanctum CSRF cookie is present for session-based auth flows
+        try {
+            await ApiClient.get('/sanctum/csrf-cookie')
+        } catch (e) {
+            // ignore — some environments don't need CSRF cookie
         }
+
+        const response = await ApiClient.post<any>('/api/v1/auth', credentials)
+
+        // Normalize response shapes: some backends return { token } while others return { access_token }
+        const token = response?.access_token ?? response?.token ?? response?.data?.access_token ?? response?.data?.token
+
+        if (token) {
+            ApiClient.setToken(token)
+            // Return the user payload in a consistent shape
+            const user = response?.user ?? response?.data?.user
+            return {
+                access_token: token,
+                token_type: response?.token_type ?? response?.data?.token_type ?? 'Bearer',
+                user,
+            } as LoginResponse
+        }
+
         throw new Error('No auth token received')
     },
 
