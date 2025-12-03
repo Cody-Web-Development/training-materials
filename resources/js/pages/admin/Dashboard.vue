@@ -2,27 +2,24 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 // import { dashboard } from '@/routes';
 // import { type BreadcrumbItem } from '@/types';
-import { Head, usePage, Link } from '@inertiajs/vue3'; 
+import { Head, usePage, Link } from '@inertiajs/vue3';
 // import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 // import { type NavItem } from '@/types';
 import { DASHBOARD_NAV_ITEMS } from '@/config/navigation'
-import { useThemeStore } from '@/stores/useThemeStore.js';
 
 const page = usePage();
-const theme = useThemeStore();
-theme.initializeTheme();
 
 </script>
 
 <template>
   <Head title="Dashboard" />
-  <AppLayout 
+  <AppLayout
       class="p-0 rounded"
   >
 
     <div class="flex flex-col h-screen bg-white rounded">
         <div class="flex flex-1 overflow-hidden">
-            
+
             <aside class="w-64 bg-gray-800 text-white overflow-y-auto hidden md:block rounded-tl-lg rounded-bl-lg">
                 <nav class="space-y-2">
                     <Link
@@ -30,7 +27,7 @@ theme.initializeTheme();
                         :key="item.title"
                         :href="item.href"
                         :class="{
-                            'transition duration-300 ease-in-out px-6 py-3 mb-0 block rounded text-base text-gray-300': true,                
+                            'transition duration-300 ease-in-out px-6 py-3 mb-0 block rounded text-base text-gray-300': true,
                             'bg-gray-700 text-white': item.href === page.url,
                             'block p-3 rounded-md hover:bg-gray-700 transition duration-150': item.href !== page.url
                         }"
@@ -49,7 +46,7 @@ theme.initializeTheme();
                         </svg>
                     </button> -->
                 </div>
-                
+
                 <!-- <p class="text-gray-700 leading-relaxed">
                     This is the primary area for page content, forms, tables, and data displays.
                     The layout uses Flexbox (`flex`) on the main container (`.flex-1 overflow-hidden`)

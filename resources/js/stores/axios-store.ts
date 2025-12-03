@@ -1,6 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { authService, userService, bankService, type UserResponse, type BankResponse, type BankListResponse } from '../lib/axios-services'
+import {
+    authService,
+    userService,
+    bankService
+} from '@/services/'
+
+import {
+    type UserResponse,
+    type BankResponse,
+    type BankListResponse
+} from '@/types/axios'
 
 /**
  * Authentication Store

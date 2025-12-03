@@ -1,16 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios'
-
-export interface ApiErrorResponse {
-    message?: string
-    errors?: Record<string, string[]>
-    status?: number
-}
-
-export interface ApiConfig {
-    baseURL?: string
-    timeout?: number
-    headers?: Record<string, string>
-}
+import {
+    type ApiErrorResponse,
+    type ApiConfig
+} from '@/types/axios'
 
 /**
  * Reusable Axios API Client
@@ -145,4 +137,4 @@ export class AxiosApiClient {
 }
 
 // Default export - singleton instance
-export const apiClient = new AxiosApiClient()
+export const ApiClient = new AxiosApiClient()
