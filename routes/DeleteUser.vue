@@ -46,7 +46,7 @@ const passwordInput = useTemplateRef('passwordInput');
                 </DialogTrigger>
                 <DialogContent>
                     <Form
-                        :action="profileRoutes.destroy().url"
+                        :action="deleteProfile().url"
                         method="delete"
                         reset-on-success
                         @error="() => passwordInput?.$el?.focus()"

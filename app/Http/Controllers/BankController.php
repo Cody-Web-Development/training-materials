@@ -13,7 +13,7 @@ class BankController extends Controller
     public function index()
     {
         // Paginate results, showing parent::$show_per_page items per page
-        $banks = Bank::paginate(parent::$show_per_page);
+        $banks = Bank::paginate(parent::$show_per_page)->withQueryString();;
         if($banks){
             return response()->json([
                 'message' => 'Bank lists successfully fetched.',

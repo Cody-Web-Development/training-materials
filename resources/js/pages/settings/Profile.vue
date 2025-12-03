@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
-import { send } from '@/routes/verification';
+import { edit } from '@/routes/profile/index.ts';
+import { send } from '@/routes/verification/index.ts';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -44,7 +43,8 @@ const user = page.props.auth.user;
                 />
 
                 <Form
-                    v-bind="ProfileController.update.form()"
+                    :action="edit().url"
+                    method="put"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >

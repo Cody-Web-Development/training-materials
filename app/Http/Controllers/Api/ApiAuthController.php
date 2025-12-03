@@ -25,7 +25,7 @@ class ApiAuthController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             // Throw a standard HTTP response error (401 Unauthorized)
             throw ValidationException::withMessages([
-                'email' => ['Invalid Email/Password. Pleas try again.'],
+                'email' => ['Invalid Email/Password. Please try again.'],
             ]);
         }
 
@@ -33,8 +33,8 @@ class ApiAuthController extends Controller
         $user = Auth::user();
 
         // Ensure old tokens are revoked if desired, then create a new one.
-        $user->tokens()->delete(); 
-        
+        $user->tokens()->delete();
+
         // Create the token with defined abilities (permissions)
         $token = $user->createToken('auth-token', ['server:update'])->plainTextToken;
 
@@ -48,7 +48,7 @@ class ApiAuthController extends Controller
     /**
      * Revoke API Token (Logout).
      */
-    public function logout(Request $request): JsonResponse
+    public function deauth(Request $request): JsonResponse
     {
         // The current token is available via $request->user()->currentAccessToken()
         // Delete the token used for the current request.

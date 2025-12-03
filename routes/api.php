@@ -7,14 +7,16 @@ use App\Http\Controllers\BankController;
 
 Route::prefix('v1')->group(function(){
     // Auth
-    Route::post('/auth', [ApiAuthController::class, 'auth'])->name('auth');
+    Route::post('/auth', [ApiAuthController::class, 'auth'])
+        ->name('auth');
 
-    Route::middleware('auth:sanctum')->group(function () {        
+    Route::middleware('auth:sanctum')->group(function () {
         // Logout by revoking the current token
-        Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout');
-        
+        Route::post('/deauth', [ApiAuthController::class, 'deauth'])
+            ->name('deauth');
+
         // Resources
-        Route::resource('user', UserController::class);
-        Route::resource('bank', BankController::class);
+        Route::resource('users', UserController::class);
+        Route::resource('banks', BankController::class);
     });
 });

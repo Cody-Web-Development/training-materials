@@ -12,10 +12,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Paginate results, showing parent::$show_per_page items per page
-        $users = User::paginate(parent::$show_per_page);
+        $users = User::paginate(parent::$show_per_page)->withQueryString();
         if($users){
             return response()->json([
                 'message' => 'User lists successfully fetched.',
@@ -87,7 +87,7 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required'
         ]);
-                
+
         $user = User::find($id)
                     ->update([
                         'name' => $request->name,
