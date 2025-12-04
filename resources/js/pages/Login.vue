@@ -9,11 +9,10 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { register } from '@/routes';
 import { request } from '@/routes/password';
-import { Head, router } from '@inertiajs/vue3'
+import { Head } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/axios-store'
 import { dashboard } from '@/routes'
-import ConfirmablePasswordController from '@/actions/Laravel/Fortify/Http/Controllers/ConfirmablePasswordController';
 
 defineProps<{
     status?: string;
@@ -30,7 +29,14 @@ const submit = async () => {
     errors.value = {}
     try {
         const response = await auth.login(form.value.email, form.value.password)
-        router.visit(dashboard.url(), { method: 'get' })
+        
+        // Save token to localStorage
+        if (response?.token) {
+            localStorage.setItem('api_token', response.token)
+        }
+        
+        // Redirect to dashboard
+        window.location.href = dashboard.url()
 
     } catch (err: any) {
         console.log('Error:', err);

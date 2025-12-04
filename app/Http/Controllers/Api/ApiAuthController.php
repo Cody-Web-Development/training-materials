@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Jobs\ProcessUserAuthLog;
 use App\Models\User; // Assuming User model
 
 class ApiAuthController extends Controller
@@ -20,10 +21,13 @@ class ApiAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+        // Dispatch job to log authentication attempt
+        ProcessUserAuthLog::dispatch()->onQueue('auth-logs');
 
         // 2. Authenticate Credentials
         if (!Auth::attempt($request->only('email', 'password'))) {
             // Throw a standard HTTP response error (401 Unauthorized)
+
             throw ValidationException::withMessages([
                 'email' => ['Invalid Email/Password. Please try again.'],
             ]);

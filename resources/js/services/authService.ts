@@ -26,14 +26,15 @@ export const authService = {
         const response = await ApiClient.post<any>('/api/v1/auth', credentials)
 
         // Normalize response shapes: some backends return { token } while others return { access_token }
-        const token = response?.access_token ?? response?.token ?? response?.data?.access_token ?? response?.data?.token
+        const token = response?.token ?? response?.access_token ?? response?.data?.token ?? response?.data?.access_token
 
         if (token) {
             ApiClient.setToken(token)
-            // Return the user payload in a consistent shape
+            // Return the user payload and token in a consistent shape
             const user = response?.user ?? response?.data?.user
             return {
-                access_token: token,
+                token: response?.token,
+                access_token: response?.access_token ?? token,
                 token_type: response?.token_type ?? response?.data?.token_type ?? 'Bearer',
                 user,
             } as LoginResponse
