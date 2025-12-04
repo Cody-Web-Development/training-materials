@@ -30,13 +30,13 @@ const handleLogout = async () => {
 </script>
 
 <template>
-    <header class="sticky top-0 z-40 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-md">
+    <header class="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
             <!-- Left: Menu Toggle -->
             <div class="flex items-center gap-4">
                 <button
                     @click="emit('toggleSidebar')"
-                    class="inline-flex items-center justify-center p-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden transition-colors"
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden transition-colors"
                     aria-label="Toggle sidebar"
                 >
                     <svg
@@ -76,10 +76,10 @@ const handleLogout = async () => {
                         <input
                             type="text"
                             placeholder="Search anything..."
-                            class="bg-slate-700/50 text-slate-200 text-sm rounded-lg pl-10 pr-4 py-2 border border-slate-600/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-slate-700 transition-all"
+                            class="bg-gray-50 text-gray-900 text-sm rounded-lg pl-10 pr-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all"
                         />
                         <svg
-                            class="absolute left-3 top-2.5 h-5 w-5 text-slate-400"
+                            class="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -96,7 +96,7 @@ const handleLogout = async () => {
 
                 <!-- Notifications -->
                 <button
-                    class="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 rounded-lg relative transition-colors"
+                    class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg relative transition-colors"
                     aria-label="Notifications"
                 >
                     <svg
@@ -123,18 +123,18 @@ const handleLogout = async () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger as-child>
                         <button
-                            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700/50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                         >
                             <div
-                                class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center text-white font-medium text-sm shadow-lg"
+                                class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-sm shadow-lg"
                             >
                                 {{ authStore.user?.name?.charAt(0).toUpperCase() ?? 'U' }}
                             </div>
-                            <span class="hidden sm:inline text-sm font-medium text-slate-200">
+                            <span class="hidden sm:inline text-sm font-medium text-gray-900">
                                 {{ authStore.user?.name ?? 'User' }}
                             </span>
                             <svg
-                                class="hidden sm:block h-4 w-4 text-slate-400"
+                                class="hidden sm:block h-4 w-4 text-gray-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -148,27 +148,27 @@ const handleLogout = async () => {
                             </svg>
                         </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" class="w-56 bg-slate-800 border-slate-700">
+                    <DropdownMenuContent align="end" class="w-56 bg-white border-gray-200">
                         <DropdownMenuLabel class="font-normal">
                             <div class="flex flex-col space-y-1">
-                                <p class="text-sm font-medium leading-none text-slate-200">{{ authStore.user?.name }}</p>
-                                <p class="text-xs leading-none text-slate-400">
+                                <p class="text-sm font-medium leading-none text-gray-900">{{ authStore.user?.name }}</p>
+                                <p class="text-xs leading-none text-gray-500">
                                     {{ authStore.user?.email }}
                                 </p>
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link href="/settings/profile" class="w-full text-slate-200 hover:text-white">Profile Settings</Link>
+                            <Link href="/settings/profile" class="w-full text-gray-700 hover:text-gray-900">Profile Settings</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link href="/settings/appearance" class="w-full text-slate-200 hover:text-white">Appearance</Link>
+                            <Link href="/settings/appearance" class="w-full text-gray-700 hover:text-gray-900">Appearance</Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem as-child>
                             <button
                                 @click="handleLogout"
-                                class="w-full text-left text-red-400 hover:text-red-300 transition-colors"
+                                class="w-full text-left text-red-600 hover:text-red-700 transition-colors"
                             >
                                 Logout
                             </button>

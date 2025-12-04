@@ -5,19 +5,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
-use App\Service\UserService;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class MetricsController extends Controller
 {
-    protected UserService $userService;
-
-    public function __construct(UserService $userService)
-    {
-        $this->userService = $userService;
-    }
-
     /**
      * Return simple admin metrics used by the minimal dashboard.
      */
@@ -25,8 +17,10 @@ class MetricsController extends Controller
     {
         $totalUsers = User::count();
 
-        // Count logged-in users using UserService
-        $loggedInUsers = $this->userService->countLoggedInUsers();
+        // Count logged-in users: distinct users with active tokens
+        $loggedInUsers = PersonalAccessToken::whereNotNull('last_used_at')
+            ->distinct('tokenable_id')
+            ->count('tokenable_id');
 
         // Failed login attempts counter stored in cache (incremented on auth failure).
         $failedAttempts = Cache::get('auth_failed_count', 0);

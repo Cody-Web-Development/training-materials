@@ -84,10 +84,10 @@ const getIcon = (name: string) => {
     />
 
     <!-- Sidebar -->
-  <aside :class="[open ? 'translate-x-0' : '-translate-x-full', 'fixed inset-y-0 left-0 w-56 bg-white border-r lg:relative lg:translate-x-0 transition-transform']">
+  <aside :class="[open ? 'translate-x-0' : '-translate-x-full', 'fixed inset-y-0 left-0 w-56 bg-white border-r border-gray-200 lg:relative lg:translate-x-0 transition-transform']">
     <div class="flex flex-col h-full">
       <!-- Logo -->
-      <div class="flex items-center justify-between h-14 px-4 border-b">
+      <div class="flex items-center justify-between h-14 px-4 border-b border-gray-200">
         <AppLogo class="text-gray-900" />
         <button @click="emit('toggle')" class="lg:hidden p-2 rounded-md hover:bg-gray-100">
           <svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,21 +97,21 @@ const getIcon = (name: string) => {
       </div>
 
       <!-- Navigation -->
-      <nav class="flex-1 px-3 py-4 overflow-y-auto">
-        <div v-for="item in navItems" :key="item.href" class="mb-1">
-          <Link :href="item.href" class="flex items-center gap-3 px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100">
-            <span v-html="getIcon(item.icon)" />
-            <span>{{ item.title }}</span>
-            <span v-if="item.badge" class="ml-auto text-xs bg-gray-200 px-2 py-0.5 rounded">{{ item.badge }}</span>
+      <nav class="flex-1 px-3 py-4 overflow-y-auto space-y-1">
+        <template v-for="item in navItems" :key="item.href">
+          <Link :href="item.href" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" :class="{ 'bg-blue-50 text-blue-600': item.checkActive(currentPath) }">
+            <span v-html="getIcon(item.icon)" class="flex-shrink-0" />
+            <span class="flex-1">{{ item.title }}</span>
+            <span v-if="item.badge" class="ml-auto text-xs font-semibold bg-blue-100 text-blue-600 px-2 py-1 rounded-full">{{ item.badge }}</span>
           </Link>
-          <div v-if="item.children" class="pl-6 mt-1">
-            <Link v-for="child in item.children" :key="child.href" :href="child.href" class="block py-1 text-sm text-gray-600 hover:text-gray-800">{{ child.title }}</Link>
+          <div v-if="item.children && item.checkActive(currentPath)" class="pl-8 space-y-1 mb-2">
+            <Link v-for="child in item.children" :key="child.href" :href="child.href" class="block px-3 py-1.5 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors">{{ child.title }}</Link>
           </div>
-        </div>
+        </template>
       </nav>
 
       <!-- Footer -->
-      <div class="border-t p-4 text-xs text-gray-500 text-center">
+      <div class="border-t border-gray-200 p-4 text-xs text-gray-500 text-center">
         <div>© 2025</div>
       </div>
     </div>
