@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
 import type { HTMLAttributes } from 'vue'
+import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 
 interface Column<T> {
@@ -51,23 +52,23 @@ const handleRowClick = (row: any) => {
 </script>
 
 <template>
-    <div :class="cn('overflow-x-auto rounded-lg border border-gray-200 bg-white', props.class)">
+    <div :class="cn('overflow-x-auto rounded-lg border bg-transparent', props.class)">
         <div v-if="props.loading" class="flex items-center justify-center py-8">
             <div class="text-center">
-                <div class="inline-flex items-center justify-center w-8 h-8 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
-                <p class="mt-2 text-sm text-gray-600">Loading...</p>
+                <div class="inline-flex items-center justify-center w-8 h-8 border-2 border-blue-900 border-t-blue-500 rounded-full animate-spin" />
+                <p class="mt-2 text-sm text-slate-400">Loading...</p>
             </div>
         </div>
 
-        <table v-else class="w-full text-sm text-gray-900">
+        <table v-else class="w-full text-sm text-slate-300">
             <!-- Header -->
-            <thead class="bg-gray-50 border-b border-gray-200">
+            <thead class="bg-slate-800/50 border-b border-slate-700/50">
                 <tr>
                     <th
                         v-for="column in columns"
                         :key="String(column.key)"
                         :class="[
-                            'px-6 py-3 text-left font-semibold text-gray-700',
+                            'px-6 py-3 text-left font-semibold text-slate-300',
                             column.width && `w-[${column.width}]`,
                             column.class,
                         ]"
@@ -75,7 +76,7 @@ const handleRowClick = (row: any) => {
                         <button
                             v-if="column.sortable"
                             @click="handleSort(column.key)"
-                            class="flex items-center gap-2 hover:text-gray-900 transition-colors"
+                            class="flex items-center gap-2 hover:text-slate-100 transition-colors"
                         >
                             {{ column.label }}
                             <svg
@@ -106,9 +107,9 @@ const handleRowClick = (row: any) => {
                     v-for="(row, index) in data"
                     :key="index"
                     :class="[
-                        'border-b border-gray-200 transition-colors',
-                        props.striped && index % 2 === 0 ? 'bg-gray-50' : 'bg-white',
-                        props.hover && 'hover:bg-gray-100 cursor-pointer',
+                        'border-b border-slate-700/50 transition-colors',
+                        props.striped && index % 2 === 0 ? 'bg-slate-800/30' : 'bg-transparent',
+                        props.hover && 'hover:bg-slate-700/30 cursor-pointer',
                     ]"
                     @click="handleRowClick(row)"
                 >
@@ -116,7 +117,7 @@ const handleRowClick = (row: any) => {
                         v-for="column in columns"
                         :key="String(column.key)"
                         :class="[
-                            'px-6 py-4',
+                            'px-6 py-4 text-slate-300',
                             column.width && `w-[${column.width}]`,
                             column.class,
                         ]"
@@ -129,9 +130,9 @@ const handleRowClick = (row: any) => {
 
                 <!-- Empty State -->
                 <tr v-if="!props.loading && data.length === 0">
-                    <td :colspan="columns.length" class="px-6 py-8 text-center text-gray-500">
+                    <td :colspan="columns.length" class="px-6 py-8 text-center text-slate-500">
                         <svg
-                            class="mx-auto h-12 w-12 text-gray-400 mb-2"
+                            class="mx-auto h-12 w-12 text-slate-600 mb-2"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -150,7 +151,3 @@ const handleRowClick = (row: any) => {
         </table>
     </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-</script>

@@ -23,7 +23,7 @@ const toggleSidebar = () => {
 </script>
 
 <template>
-    <div class="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div class="flex h-screen bg-gray-50">
         <!-- Sidebar -->
         <DashboardSidebar :open="sidebarOpen" @toggle="toggleSidebar" />
 
@@ -34,12 +34,12 @@ const toggleSidebar = () => {
 
             <!-- Page Content -->
             <main class="flex-1 overflow-auto">
-                <div class="px-4 py-8 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
                     <!-- Page Header -->
-                    <div v-if="title || $slots.header" class="mb-8">
+                    <div v-if="title || $slots.header" class="mb-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-500 bg-clip-text text-transparent">{{ title }}</h1>
+                                <h1 class="text-2xl font-semibold text-gray-900">{{ title }}</h1>
                             </div>
                             <slot name="header-action" />
                         </div>

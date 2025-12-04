@@ -39,6 +39,10 @@ export interface UserResponse {
     id: number
     name: string
     email: string
+    first_name?: string
+    last_name?: string
+    middle_name?: string
+    user_roles?: string
     email_verified_at?: string | null
     created_at: string
     updated_at: string
@@ -47,6 +51,19 @@ export interface UserResponse {
 export interface UpdateUserRequest {
     name?: string
     email?: string
+    first_name?: string
+    last_name?: string
+    middle_name?: string
+    user_roles?: string
+    password?: string
+}
+
+export interface UserListResponse {
+    data: UserResponse[]
+    current_page: number
+    per_page: number
+    total: number
+    last_page: number
 }
 
 export interface ChangePasswordRequest {

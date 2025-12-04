@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Jobs\ProcessUserAuthLog;
+use App\Jobs\LogAuthAttempt;
+use Illuminate\Support\Facades\Cache;
 use App\Models\User; // Assuming User model
 
 class ApiAuthController extends Controller
@@ -21,12 +23,28 @@ class ApiAuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        // Dispatch job to log authentication attempt
-        ProcessUserAuthLog::dispatch()->onQueue('auth-logs');
+
+        $email = $request->input('email');
+        $ipAddress = $request->ip();
+        $userAgent = $request->header('User-Agent');
 
         // 2. Authenticate Credentials
         if (!Auth::attempt($request->only('email', 'password'))) {
-            // Throw a standard HTTP response error (401 Unauthorized)
+            // Log failed login attempt
+            LogAuthAttempt::dispatch(
+                email: $email,
+                status: 'failed',
+                ipAddress: $ipAddress,
+                userAgent: $userAgent,
+                failureReason: 'invalid_credentials'
+            )->onQueue('auth-logs');
+
+            // Increment failed-login metric counter in cache
+            try {
+                Cache::increment('auth_failed_count');
+            } catch (\Throwable $ex) {
+                // ignore cache errors
+            }
 
             throw ValidationException::withMessages([
                 'email' => ['Invalid Email/Password. Please try again.'],
@@ -40,10 +58,22 @@ class ApiAuthController extends Controller
         $user->tokens()->delete();
 
         // Create the token with defined abilities (permissions)
-        $token = $user->createToken('auth-token', ['server:update'])->plainTextToken;
+        $plainToken = $user->createToken('auth-token', ['server:update'])->plainTextToken;
+
+        // Log successful login attempt
+        LogAuthAttempt::dispatch(
+            email: $user->email,
+            status: 'success',
+            ipAddress: $ipAddress,
+            userAgent: $userAgent
+        )->onQueue('auth-logs');
+
+        // Dispatch legacy job for backward compatibility
+        ProcessUserAuthLog::dispatch()->onQueue('auth-logs');
 
         return response()->json([
-            'token' => $token,
+            'token' => $plainToken,
+            'access_token' => $plainToken,
             'token_type' => 'Bearer',
             'user' => $user->only('id', 'name', 'email'),
         ], 200);

@@ -22,15 +22,11 @@ export const useAuthStore = defineStore('auth', () => {
         isLoading.value = true
         error.value = null
         try {
-            console.log('Attempting login with', email);
             const response = await authService.login({ email, password })
-            
-            // Store token in localStorage 
-            localStorage.setItem('_token', response.access_token);
-            console.log(localStorage.getItem('_token'));
-            
+
+            // authService.login already calls ApiClient.setToken() with the correct key
             user.value = response.user
-            
+
             return response
         } catch (err: any) {
             error.value = err.message || 'Login failed'

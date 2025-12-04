@@ -19,7 +19,7 @@ const emit = defineEmits<{
 const page = usePage()
 
 const currentPath = computed(() => {
-    return page.props.route_name || ''
+    return page.props.route_name || page.url || ''
 })
 
 const navItems = [
@@ -27,23 +27,26 @@ const navItems = [
         title: 'Dashboard',
         href: '/',
         icon: 'dashboard',
-        active: currentPath.value === 'home',
+        checkActive: (path: string) => path === 'dashboard' || path === '/',
     },
     {
         title: 'Users',
         href: '/users',
         icon: 'users',
         badge: '12',
+        checkActive: (path: string) => path === 'users' || path === '/users',
     },
     {
         title: 'Banks',
         href: '/banks',
         icon: 'building',
+        checkActive: (path: string) => path === 'banks' || path === '/banks',
     },
     {
         title: 'Settings',
         href: '/settings/profile',
         icon: 'settings',
+        checkActive: (path: string) => path.includes('settings'),
         children: [
             { title: 'Profile', href: '/settings/profile' },
             { title: 'Password', href: '/settings/password' },
@@ -81,89 +84,36 @@ const getIcon = (name: string) => {
     />
 
     <!-- Sidebar -->
-    <aside
-        :class="[
-            'fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-slate-900 to-slate-950 text-white transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:z-0 border-r border-slate-700/50',
-            open ? 'translate-x-0' : '-translate-x-full',
-        ]"
-    >
-        <div class="flex flex-col h-full">
-            <!-- Logo -->
-            <div class="flex items-center justify-between h-16 px-4 border-b border-slate-700/50">
-                <AppLogo class="text-white" />
-                <button
-                    @click="emit('toggle')"
-                    class="lg:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors"
-                >
-                    <svg
-                        class="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
-            </div>
+  <aside :class="[open ? 'translate-x-0' : '-translate-x-full', 'fixed inset-y-0 left-0 w-56 bg-white border-r lg:relative lg:translate-x-0 transition-transform']">
+    <div class="flex flex-col h-full">
+      <!-- Logo -->
+      <div class="flex items-center justify-between h-14 px-4 border-b">
+        <AppLogo class="text-gray-900" />
+        <button @click="emit('toggle')" class="lg:hidden p-2 rounded-md hover:bg-gray-100">
+          <svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-            <!-- Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-                <div v-for="item in navItems" :key="item.href" class="space-y-1">
-                    <!-- Main item -->
-                    <Link
-                        :href="item.href"
-                        :class="[
-                            'flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
-                            item.active
-                                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/20'
-                                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50',
-                        ]"
-                    >
-                        <div class="flex items-center gap-3">
-                            <span v-html="getIcon(item.icon)" />
-                            <span>{{ item.title }}</span>
-                        </div>
-                        <span
-                            v-if="item.badge"
-                            class="ml-auto bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow-lg"
-                        >
-                            {{ item.badge }}
-                        </span>
-                    </Link>
-
-                    <!-- Sub items -->
-                    <div v-if="item.children" class="space-y-1 pl-4">
-                        <Link
-                            v-for="child in item.children"
-                            :key="child.href"
-                            :href="child.href"
-                            class="flex items-center px-4 py-2 rounded-lg text-sm text-slate-500 hover:text-slate-200 hover:bg-slate-800/30 transition-colors"
-                        >
-                            <svg
-                                class="w-2 h-2 mr-2"
-                                fill="currentColor"
-                                viewBox="0 0 8 8"
-                            >
-                                <circle cx="4" cy="4" r="3" />
-                            </svg>
-                            {{ child.title }}
-                        </Link>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Footer -->
-            <div class="border-t border-slate-700/50 p-4">
-                <div class="text-xs text-slate-500 text-center">
-                    <p>© 2025 Dashboard</p>
-                    <p class="mt-1">v1.0.0</p>
-                </div>
-            </div>
+      <!-- Navigation -->
+      <nav class="flex-1 px-3 py-4 overflow-y-auto">
+        <div v-for="item in navItems" :key="item.href" class="mb-1">
+          <Link :href="item.href" class="flex items-center gap-3 px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-100">
+            <span v-html="getIcon(item.icon)" />
+            <span>{{ item.title }}</span>
+            <span v-if="item.badge" class="ml-auto text-xs bg-gray-200 px-2 py-0.5 rounded">{{ item.badge }}</span>
+          </Link>
+          <div v-if="item.children" class="pl-6 mt-1">
+            <Link v-for="child in item.children" :key="child.href" :href="child.href" class="block py-1 text-sm text-gray-600 hover:text-gray-800">{{ child.title }}</Link>
+          </div>
         </div>
-    </aside>
+      </nav>
+
+      <!-- Footer -->
+      <div class="border-t p-4 text-xs text-gray-500 text-center">
+        <div>© 2025</div>
+      </div>
+    </div>
+  </aside>
 </template>

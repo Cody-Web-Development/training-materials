@@ -46,25 +46,23 @@ const handleLogout = async () => {
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                     >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
-                    <svg
-                        v-else
-                        class="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
+                        <template>
+                            <header class="flex items-center justify-between h-14 px-4 bg-white border-b">
+                                <div class="flex items-center gap-3">
+                                    <button @click="$emit('toggle-sidebar')" class="p-2 rounded-md hover:bg-gray-100">
+                                        <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                        </svg>
+                                    </button>
+                                    <div class="text-sm font-medium text-gray-800">Dashboard</div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="text" placeholder="Search" class="px-3 py-1 rounded border text-sm" />
+                                    <button class="text-sm text-gray-700" @click="handleLogout">Logout</button>
+                                </div>
+                            </header>
+                        </template>
                         />
                     </svg>
                 </button>

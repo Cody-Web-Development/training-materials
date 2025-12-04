@@ -5,10 +5,12 @@ use Inertia\Inertia;
 use App\Jobs\ProcessUserUpdate;
 
 Route::get('/login', function () {
-    ProcessUserUpdate::dispatch()->onQueue('auth-logs');
-
     return Inertia::render('Login');
 })->name('login');
+
+Route::get('/register', function () {
+    return Inertia::render('Register');
+})->name('register');
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('/sanctum/csrf-cookie', function () {
@@ -16,12 +18,16 @@ Route::group(['middleware' => ['web']], function () {
     });
 });
 
+// Frontend dashboard - accessible after API login
+// The frontend will validate the API token via axios client
+Route::get('/', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
+// Users list page
+Route::get('/users', function () {
+    return Inertia::render('Users');
+})->name('users');
 
 
 require __DIR__.'/settings.php';

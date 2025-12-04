@@ -27,37 +27,13 @@ const getIcon = (name: string) => {
 </script>
 
 <template>
-    <div class="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl p-6 border border-slate-700/50 backdrop-blur-sm hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 overflow-hidden">
-        <!-- Gradient background on hover -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/0 to-cyan-600/0 group-hover:from-blue-600/5 group-hover:to-cyan-600/5 transition-all duration-300 pointer-events-none rounded-xl" />
-
-        <div class="relative flex items-start justify-between">
-            <div>
-                <p class="text-sm font-medium text-slate-400">{{ title }}</p>
-                <p class="mt-2 text-3xl font-bold text-transparent bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text">{{ value }}</p>
-            </div>
-            <div
-                :class="[
-                    'p-3 rounded-lg',
-                    trend === 'up'
-                        ? 'bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 text-emerald-400'
-                        : 'bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400',
-                ]"
-                v-html="getIcon(icon)"
-            />
-        </div>
-        <div class="mt-4 flex items-center relative">
-            <span
-                :class="[
-                    'text-sm font-semibold',
-                    trend === 'up' ? 'text-emerald-400' : 'text-red-400',
-                ]"
-            >
-                {{ change }}
-            </span>
-            <span class="text-sm text-slate-500 ml-2">
-                {{ trend === 'up' ? '↑' : '↓' }} from last month
-            </span>
-        </div>
+  <div class="rounded-lg p-4 border bg-white">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs text-gray-500">{{ title }}</p>
+        <p class="text-lg font-semibold text-gray-900 mt-1">{{ value }}</p>
+      </div>
+      <div class="text-sm text-gray-600">{{ change }}</div>
     </div>
+  </div>
 </template>

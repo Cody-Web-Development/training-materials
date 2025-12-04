@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Service\UserService;
 
 
 class UserController extends Controller
 {
+    protected UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -16,10 +24,14 @@ class UserController extends Controller
     {
         // Paginate results, showing parent::$show_per_page items per page
         $users = User::paginate(parent::$show_per_page)->withQueryString();
+        $loggedInStats = $this->userService->getLoggedInStats();
+
         if($users){
             return response()->json([
                 'message' => 'User lists successfully fetched.',
-                'user' => $users
+                'user' => $users,
+                'data' => $users,
+                'logged_in_stats' => $loggedInStats
             ]);
         }else{
             return response()->json([
